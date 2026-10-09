@@ -46,12 +46,7 @@
     "https://www.instagram.com/bayyildizayakkabi/",
     "https://www.facebook.com/bayyildizayakkabi/"
   ],
-  "foundingDate": "1989",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "150"
-  }
+  "foundingDate": "1989"
 }
 </script>
   <link rel="stylesheet" href="css/cart.min.css">
@@ -71,12 +66,12 @@
     <div class="header-topbar">
       <div class="container topbar-container">
         <div class="topbar-left">
-          <a href="hakkimizda.html">Hakkımızda</a>
-          <a href="subelerimiz.html">Şubelerimiz</a>
-          <a href="iletisim.html">İletişim</a>
+          <a href="hakkimizda">Hakkımızda</a>
+          <a href="subelerimiz">Şubelerimiz</a>
+          <a href="iletisim">İletişim</a>
         </div>
         <div class="topbar-right">
-          <a href="siparis-takip.html" class="topbar-contact" style="display: flex; align-items: center; gap: 0.3rem; margin-right: 1.5rem; color: #10b981; font-weight: 600;">
+          <a href="siparis-takip" class="topbar-contact" style="display: flex; align-items: center; gap: 0.3rem; margin-right: 1.5rem; color: #10b981; font-weight: 600;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
             Kargom Nerede?
           </a>
@@ -92,7 +87,7 @@
     <div class="header-middle">
       <div class="container middle-container">
         <!-- Logo -->
-        <a href="index.html" class="header-logo">
+        <a href="/" class="header-logo">
           <img src="img/logo.webp?v=10.6.5" alt="BAYYILDIZ" class="navbar-logo">
           <div class="navbar-brand-text">
             <span class="navbar-title">BAYYILDIZ</span>
@@ -134,7 +129,7 @@
               <div class="mega-search-right">
                 <div class="search-results-header">
                   <h4 id="search-results-title">Öne Çıkanlar</h4>
-                  <a href="urunler.html" class="view-all-link">Tümünü Gör <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                  <a href="urunler" class="view-all-link">Tümünü Gör <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
                 </div>
                 <div class="search-results-grid" id="search-results-grid">
                   <!-- Dynamically injected -->
@@ -152,7 +147,7 @@
           </button>
           
           <div class="profile-dropdown-wrapper">
-            <a href="hesabim.html" class="action-btn profile-btn">
+            <a href="hesabim" class="action-btn profile-btn">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </a>
             <div class="profile-dropdown">
@@ -193,7 +188,7 @@
     <nav class="header-bottom" id="navbar-menu">
       <div class="container bottom-container">
         <ul class="header-nav-list" id="header-nav-list">
-          <li><a href="urunler.html" class="navbar-link" data-page="urunler.html">Tüm Koleksiyon</a></li>
+          <li><a href="urunler" class="navbar-link" data-page="urunler.html">Tüm Koleksiyon</a></li>
           <li><a href="urunler.html?category=Günlük" class="navbar-link" data-category="Günlük">Günlük</a></li>
           <li><a href="urunler.html?category=Klasik" class="navbar-link" data-category="Klasik">Klasik</a></li>
           <li><a href="urunler.html?category=Outdoor" class="navbar-link" data-category="Outdoor">Outdoor</a></li>
@@ -204,10 +199,10 @@
         <!-- Mobile Extra Links -->
         <ul class="mobile-extra-links">
           <li><hr></li>
-          <li><a href="hakkimizda.html">Hakkımızda</a></li>
-          <li><a href="subelerimiz.html">Şubelerimiz</a></li>
-          <li><a href="siparis-takip.html" style="color:#10b981;">Sipariş Takibi</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
+          <li><a href="hakkimizda">Hakkımızda</a></li>
+          <li><a href="subelerimiz">Şubelerimiz</a></li>
+          <li><a href="siparis-takip" style="color:#10b981;">Sipariş Takibi</a></li>
+            <li><a href="iletisim">İletişim</a></li>
           <li><a href="tel:+905522228298" style="color: var(--primary); font-weight: 600;">Bizi Arayın</a></li>
         </ul>
       </div>
@@ -234,16 +229,23 @@
           <div style="margin-bottom: 1rem;">
             <label style="display:block; margin-bottom:0.5rem; color:#64748b; font-size:0.9rem;">Cep Telefonu</label>
             <input type="tel" id="auth-phone" style="width: 100%; padding: 0.8rem 1rem; border-radius: 0.5rem; background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#cbd5e1'">
+          
+            <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: flex-start;">
+              <input type="checkbox" id="auth-kvkk-checkbox" style="margin-top: 3px; cursor: pointer; accent-color: #0f172a;">
+              <label for="auth-kvkk-checkbox" style="color: #64748b; font-size: 0.85rem; cursor: pointer; line-height: 1.4; margin: 0;">
+                <a href="sartlar-ve-kosullar" target="_blank" style="color: #3b82f6; text-decoration: underline;">KVKK Aydınlatma Metni</a>'ni okudum, anladım ve kabul ediyorum.
+              </label>
+            </div>
           </div>
-        </div>
-        <div style="margin-bottom: 1rem;">
+          </div><!-- auth-extra-fields END -->
+          <div style="margin-bottom: 1rem;">
           <label style="display:block; margin-bottom:0.5rem; color:#64748b; font-size:0.9rem;" id="auth-email-label">E-posta Adresi</label>
           <input type="email" id="auth-email" required style="width: 100%; padding: 0.8rem 1rem; border-radius: 0.5rem; background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#cbd5e1'">
         </div>
         <div style="margin-bottom: 1.5rem;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
   <label style="color:#64748b; font-size:0.9rem; margin-bottom:0;">Şifreniz</label>
-  <a href="#" id="forgot-password-link" onclick="event.preventDefault(); window.handleForgotPassword();" style="font-size:0.85rem; color:#3b82f6; text-decoration:none;">ŞŞŞifremi Unuttum?</a>
+  <a href="#" id="forgot-password-link" onclick="event.preventDefault(); window.handleForgotPassword();" style="font-size:0.85rem; color:#3b82f6; text-decoration:none;">Şifremi Unuttum?</a>
 </div>
           <input type="password" id="auth-password" required minlength="6" style="width: 100%; padding: 0.8rem 1rem; border-radius: 0.5rem; background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#cbd5e1'">
         </div>
@@ -328,7 +330,7 @@
           </button>
             <label style="width: 100%; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem; cursor: pointer;">
               <input type="checkbox" required id="notify-kvkk" style="width: 16px; height: 16px; accent-color: var(--warning, #f59e0b); cursor: pointer;">
-              <span><a href="sartlar-ve-kosullar.html" target="_blank" style="color: var(--warning, #f59e0b); text-decoration: underline;">KVKK Ayd&#305;nlatma Metni</a>'ni okudum ve kabul ediyorum.</span>
+              <span><a href="sartlar-ve-kosullar" target="_blank" style="color: var(--warning, #f59e0b); text-decoration: underline;">KVKK Ayd&#305;nlatma Metni</a>'ni okudum ve kabul ediyorum.</span>
             </label>
           </form>
         <div id="notify-message" style="display:none; width: 100%; color: white;"></div>
@@ -369,20 +371,20 @@
         
         <div class="footer-links">
           <h4>HIZLI LİNKLER</h4>
-          <a href="index.html">Ana Sayfa</a>
-          <a href="urunler.html">Ürünler</a>
-          <a href="hakkimizda.html">Hakkımızda</a>
-          <a href="iletisim.html">İletişim</a>
-          <a href="urunler.html#favoriler">Favorilerim</a>
+          <a href="/">Ana Sayfa</a>
+          <a href="urunler">Ürünler</a>
+          <a href="hakkimizda">Hakkımızda</a>
+          <a href="iletisim">İletişim</a>
+          <a href="urunler#favoriler">Favorilerim</a>
         </div>
 
         <div class="footer-links">
           <h4>KURUMSAL</h4>
-          <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
-          <a href="sartlar-ve-kosullar.html">KVKK Aydınlatma Metni</a>
-          <a href="sartlar-ve-kosullar.html">İade &amp; Değişim Koşulları</a>
-          <a href="sartlar-ve-kosullar.html">Mesafeli Satış Sözleşmesi</a>
-          <a href="urunler.html">Beden Rehberi</a>
+          <a href="gizlilik-politikasi">Gizlilik Politikası</a>
+          <a href="sartlar-ve-kosullar">KVKK Aydınlatma Metni</a>
+          <a href="sartlar-ve-kosullar">İade &amp; Değişim Koşulları</a>
+          <a href="sartlar-ve-kosullar">Mesafeli Satış Sözleşmesi</a>
+          <a href="urunler">Beden Rehberi</a>
         </div>
 
         <div class="footer-contact">
@@ -486,11 +488,13 @@
     </div>
       </div>
     </div>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js" crossorigin="anonymous"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js" crossorigin="anonymous"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-check-compat.js" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-database-compat.js" crossorigin="anonymous"></script>
   
     <script src="js/cart.js?v=10.6.5"></script>
     <script src="js/app.js?v=10.6.5"></script>
 </body>
 </html>
+

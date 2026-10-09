@@ -33,6 +33,15 @@ window.toggleAuthMode = function() {
     const phoneInput = document.getElementById('auth-phone');
     
     errorEl.style.display = 'none';
+    
+    if (!isLoginMode) {
+        const kvkkCb = document.getElementById('auth-kvkk-checkbox');
+        if (kvkkCb && !kvkkCb.checked) {
+            errorEl.innerText = "Lütfen kayıt olmak için KVKK Aydınlatma Metni'ni onaylayın.";
+            errorEl.style.display = 'block';
+            return;
+        }
+    }
     const emailLabel = document.getElementById('auth-email-label');
     
     if (isLoginMode) {
@@ -114,7 +123,9 @@ window.handleAuthSubmit = async function() {
                         kayitTarihi: new Date().toISOString(),
                         createdAt: new Date().toISOString(),
                         status: 'new',
-                        source: 'web_register'
+                        source: 'web_register',
+                        kvkkConsent: true,
+                        kvkkTimestamp: new Date().toISOString()
                     });
                 } catch(dbErr) {
                     console.error("Müşteri bilgisi veritabanına yazılamadı:", dbErr);
@@ -149,7 +160,7 @@ window.handleLogout = async function() {
         localStorage.removeItem('bayyildiz_history');
         localStorage.removeItem('bayyildiz_favorites');
         localStorage.removeItem('bayyildiz_cart');
-        localStorage.removeItem('bayyildiz_cached_username');
+        localStorage.removeItem('bayyildiz_cached_username'); localStorage.removeItem('bayyildiz_cached_phone');
         if (window.App) {
             window.App.favorites = [];
             window.App.userDbKey = null; // FIX: bir sonraki girişte bayat/yanlış dbKey kullanılmasın
@@ -251,11 +262,11 @@ function showProfileSection(email) {
             if(!userName && user.displayName) { userName = user.displayName; }
             if(userName) {
                 emailDisp.innerText = userName;
-                localStorage.setItem('bayyildiz_cached_username', userName);
+                localStorage.setItem('bayyildiz_cached_username', userName); let phoneVal = data.phone || data.telefon || ''; if(phoneVal) localStorage.setItem('bayyildiz_cached_phone', phoneVal);
             } else {
                 // Eger veritabanından isim cekilemediyse (ornek: KVKK onayı yoksa)
                 // ekranda baska birinin ismi kalmasın diye temizliyoruz.
-                localStorage.removeItem('bayyildiz_cached_username');
+                localStorage.removeItem('bayyildiz_cached_username'); localStorage.removeItem('bayyildiz_cached_phone');
                 emailDisp.innerText = "Değerli Müşterimiz";
                 
                 // KVKK uyarı metni ekle

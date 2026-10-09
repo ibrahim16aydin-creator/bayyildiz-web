@@ -17,6 +17,7 @@ const App = {
   settings: null,
   
   // XSS Koruması için yardımcı fonksiyon
+  safeUrl(u) { return /^https?:\/\//i.test(u) || (u && u.startsWith('/')) ? u : '#'; },
   escapeHtml(str) {
     if (str === null || str === undefined) return '';
     return String(str)
@@ -92,7 +93,7 @@ const App = {
     const baseCustomersPath = (this.DATA_PATH ? this.DATA_PATH : '_bayyildiz_secure_v1_A9xK2mP8') + '/customers';
     let dbKey = uid;
     this.userDbKey = dbKey;
-    const dbPath = baseCustomersPath + '/' + dbKey;
+    let dbPath = baseCustomersPath + '/' + dbKey;
 
     let seedData = null;
 
@@ -107,6 +108,9 @@ const App = {
                   let results = querySnap.val();
                   let firstKey = Object.keys(results)[0];
                   if (firstKey !== uid) {
+                      dbKey = firstKey;
+                      this.userDbKey = dbKey;
+                      dbPath = baseCustomersPath + '/' + dbKey;
                       seedData = results[firstKey];
                   }
               }
@@ -216,7 +220,8 @@ const App = {
     apiKey: "AIzaSyCn5XmqEuwpaVpbE838MQXUPDbCWohpn0k",
     authDomain: "bayyildiz-stoktakip-4f986.firebaseapp.com",
     databaseURL: "https://bayyildiz-stoktakip-4f986-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "bayyildiz-stoktakip-4f986"
+    projectId: "bayyildiz-stoktakip-4f986",
+      appId: "1:543393820406:web:72825019b98eb2e52946d7"
   },
   
   // DİKKAT: Güvenlik açığı oluşturmamak için credentials (e-posta/şifre) buradan kaldırıldı.
@@ -451,7 +456,9 @@ const App = {
                         date: new Date().toISOString(),
                         status: 1,
                         carrier: 'Satıcı onayı bekleniyor',
-                        trackingCode: ''
+                        trackingCode: '',
+                        kvkkConsent: true,
+                        kvkkTimestamp: new Date().toISOString()
                     });
                 }
             } catch(e) {
@@ -671,7 +678,7 @@ const App = {
       let prefill = null;
       if (typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser && !firebase.auth().currentUser.isAnonymous) {
           const user = firebase.auth().currentUser;
-          prefill = { name: user.displayName || '', phone: '', email: user.email };
+          prefill = { name: user.displayName || localStorage.getItem('bayyildiz_cached_username') || '', phone: localStorage.getItem('bayyildiz_cached_phone') || '', email: user.email };
           let dbPath = (window.App && window.App.DATA_PATH ? window.App.DATA_PATH : '_bayyildiz_secure_v1_A9xK2mP8') + '/customers/' + user.uid;
           try {
               const snap = await firebase.database().ref(dbPath).once('value');
@@ -1118,7 +1125,9 @@ const App = {
           phone: phone,
           createdAt: new Date().toISOString(),
           status: 'new',
-          source: 'web'
+          source: 'web',
+          kvkkConsent: true,
+          kvkkTimestamp: new Date().toISOString()
         }).then(() => {
           msgDiv.innerHTML = '<div style="display:flex;align-items:center;gap:10px;font-size:0.95rem;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> <span>Bilgileriniz başarıyla kaydedildi. İletişimde kalacağız!</span></div>';
           msgDiv.style.display = 'block';
@@ -1171,6 +1180,19 @@ const App = {
       });
       
       this.db = firebase.database();
+    // App Check geçici olarak devre dışı bırakıldı (reCAPTCHA anahtarı olmadığı için bağlantıyı kesiyor)
+        // Firebase App Check aktif
+    try {
+      if (typeof firebase.appCheck === 'function') {
+        const appCheck = firebase.appCheck();
+        appCheck.activate(
+          new firebase.appCheck.ReCaptchaEnterpriseProvider('6Lcx2OEtAAAAAIVLFVvIrpJ4b4FzadcNOXWCI99p'), // Vercel deploy öncesi buraya site key eklenecek
+          true
+        );
+        console.log("🛡️ Firebase App Check aktif edildi.");
+      }
+    } catch(e) { console.error('App Check başlatılamadı:', e); }
+    
       this.startListening();
       
     } catch (error) {
@@ -1209,7 +1231,14 @@ const App = {
   
   processData(data) {
     // Sadece silinmemiş ürünleri al
-    this.products = (data.products || []).filter(p => p && !p.deletedAt && p.id);
+    this.products = (data.products || []).filter(p => p && !p.deletedAt && p.id).map(p => {
+        p.model = this.escapeHtml(p.model);
+        p.brand = this.escapeHtml(p.brand);
+        p.color = this.escapeHtml(p.color);
+        p.barcode = this.escapeHtml(p.barcode);
+        p.category = this.escapeHtml(p.category);
+        return p;
+    });
     this.stockData = data.stock || {};
     this.branches = data.branches || [];
     this.settings = data.settings || {};
@@ -1790,7 +1819,7 @@ const App = {
 
     if (historyContainer) {
       const history = JSON.parse(localStorage.getItem('bayyildiz_history') || '[]');
-      const hProducts = history.map(id => this.products.find(p => p.id === id)).filter(Boolean);
+      const hProducts = history.map(id => this.products.find(p => String(p.id) === String(id))).filter(Boolean);
       
       if (hProducts.length === 0) {
         document.getElementById('history-empty').style.display = 'block';
@@ -1802,7 +1831,7 @@ const App = {
     }
 
     if (favoritesContainer) {
-      const fProducts = this.favorites.map(id => this.products.find(p => p.id === id)).filter(Boolean);
+      const fProducts = this.favorites.map(id => this.products.find(p => String(p.id) === String(id))).filter(Boolean);
       
       if (fProducts.length === 0) {
         document.getElementById('favorites-empty').style.display = 'block';
@@ -2143,7 +2172,7 @@ const App = {
       if(!parentContainer) return;
 
       const historyIds = JSON.parse(localStorage.getItem('bayyildiz_history') || '[]').filter(id => id !== p.id).slice(0, 4);
-      const historyProds = historyIds.map(id => App.products.find(x => x.id === id)).filter(Boolean);
+      const historyProds = historyIds.map(id => App.products.find(x => String(x.id) === String(id))).filter(Boolean);
       
       if (historyProds.length > 0) {
         const historySection = document.createElement('div');
@@ -2510,18 +2539,14 @@ const App = {
        } else {
           alert('Ödemeniz başarıyla gerçekleşti! Sipariş/Ödeme No: ' + paymentId);
        }
-       // Write to Firebase
-       const ordersRef = window.db ? window.ref(window.db, '_bayyildiz_secure_v1_A9xK2mP8/orders') : null;
-       if (ordersRef) {
-          if(window.Cart) { window.Cart.items = []; window.Cart.saveCart(); }
-          window.push(ordersRef, {
-             productId: params.get('productId'),
-             size: params.get('size'),
-             price: params.get('price'),
-             paymentId: paymentId,
-             status: 'Ödendi',
-             createdAt: new Date().toISOString()
-          });
+       // GÜVENLİK (SECURITY): 
+       // Ödeme onayı frontend üzerinden veritabanına YAZILAMAZ. 
+       // İyzico'dan gelen success parametresi kullanıcı tarafından manipüle edilebilir.
+       // Bu yüzden veritabanı kaydı SADECE backend (sunucu) tarafından yapılmalıdır.
+       if(window.Cart) { 
+           window.Cart.items = []; 
+           window.Cart.saveCart(); 
+           window.Cart.renderCart(); 
        }
        // Clear URL
        window.history.replaceState({}, document.title, window.location.pathname);
@@ -2838,11 +2863,11 @@ const App = {
       
       let photoHtml = '';
       if (review.photo) {
-        const safePhoto = App.escapeHtml(review.photo);
+        const safePhoto = App.safeUrl(App.escapeHtml(review.photo));
         photoHtml = `
-          <div style="margin-top: 10px; cursor: zoom-in;" onclick="window.open('${safePhoto}', '_blank')">
+          <a href="${safePhoto}" target="_blank" style="display:inline-block; margin-top: 10px; cursor: zoom-in;">
             <img src="${safePhoto}" style="max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-          </div>
+          </a>
         `;
       }
       const safeComment = App.escapeHtml(review.comment || '');
@@ -4025,12 +4050,12 @@ function initDynamicSlider() {
             const slideDiv = document.createElement('div');
             slideDiv.className = `slide ${i === 0 ? 'active' : ''}`;
             
-            const isVideo = slide.url && slide.url.match(/\.(mp4|webm|ogg)$/i);
+            const isVideo = App.safeUrl(slide.url) && App.safeUrl(slide.url).match(/\.(mp4|webm|ogg)$/i);
             
             if (isVideo) {
-                slideDiv.innerHTML = `<video src="${slide.url}" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0;"></video>`;
+                slideDiv.innerHTML = `<video src="${App.safeUrl(slide.url)}" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0;"></video>`;
             } else {
-                slideDiv.style.backgroundImage = `url('${slide.url}')`;
+                slideDiv.style.backgroundImage = `url('${App.safeUrl(slide.url)}')`;
                 slideDiv.style.backgroundSize = 'cover';
                 slideDiv.style.backgroundPosition = 'center';
             }
@@ -4464,3 +4489,4 @@ window.handleForgotPassword = function() {
         }
     });
 };
+

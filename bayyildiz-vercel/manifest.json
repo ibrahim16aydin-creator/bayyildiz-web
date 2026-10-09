@@ -2,7 +2,7 @@
   "name": "BAYYILDIZ Ayakkabı",
   "short_name": "BAYYILDIZ",
   "description": "1989'dan beri Bursa'da %100 hakiki deri, el yapımı ayakkabı.",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0D1017",
   "theme_color": "#0D1017",

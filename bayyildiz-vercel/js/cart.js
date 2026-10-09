@@ -332,9 +332,9 @@ const Cart = {
               <div class="cart-item-price">${priceFormatted}</div>
               
               <div class="qty-control">
-                <button class="qty-btn" onclick="Cart.updateQty(${index}, ${item.qty - 1})">-</button>
+                <button class="qty-btn" onclick="Cart.updateQty(${index}, ${Number(item.qty) - 1})">-</button>
                 <input type="text" class="qty-input" value="${item.qty}" readonly>
-                <button class="qty-btn" onclick="Cart.updateQty(${index}, ${item.qty + 1})">+</button>
+                <button class="qty-btn" onclick="Cart.updateQty(${index}, ${Number(item.qty) + 1})">+</button>
               </div>
               
               <button class="remove-btn" onclick="Cart.removeItem(${index})">

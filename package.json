@@ -1,0 +1,14 @@
+{
+  "name": "bayyildiz-vercel",
+  "version": "1.0.0",
+  "description": "Bayyildiz Website for Vercel",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
